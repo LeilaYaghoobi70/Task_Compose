@@ -1,12 +1,11 @@
 package com.example.tvapp.ui.homeScreen
 
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.tvapp.base.BaseViewModel
 import com.example.tvapp.data.model.Task
 import com.example.tvapp.data.repository.TaskRepository
+import com.example.tvapp.utils.GetResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -18,28 +17,29 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val mTaskRepository: TaskRepository
 ) : BaseViewModel() {
-    private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
-    val state: StateFlow<HomeState>
-        get() = _state
+
+    private val _state =  MutableStateFlow(HomeState())
+    val state: StateFlow<HomeState> get() = _state
 
     init {
         getTask()
     }
 
     private fun getTask() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
+            _state.value = HomeState(loading = true)
             mTaskRepository.getTasks().catch {
-                _state.value = HomeState(getTasks = Result.failure(it))
+                _state.value = HomeState(getTasks = GetResult.Error(it),loading = false)
             }.collect {
-                _state.value = HomeState(getTasks = Result.success(it))
+                _state.value = HomeState(getTasks =GetResult.Success(it),loading = false)
             }
         }
     }
 }
 
 data class HomeState(
-    val getTasks: Result<List<Task>>? = null,
-    val refreshing: Boolean = false
+    val getTasks: GetResult<List<Task>>? = null,
+    val loading: Boolean = false
 )
 
 

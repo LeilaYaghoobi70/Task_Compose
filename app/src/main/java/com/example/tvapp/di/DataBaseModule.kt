@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.tvapp.data.db.TaskDao
+import com.example.tvapp.data.db.TaskDataBase
 import com.example.tvapp.data.model.Task
 import dagger.Module
 import dagger.Provides
@@ -16,11 +17,6 @@ const val DB_NAME = "TASK"
 @Module
 @InstallIn(SingletonComponent::class)
 class DataBaseModule {
-
-    @Database(entities = [Task::class], version = 1)
-    abstract class TaskDataBase : RoomDatabase() {
-        abstract fun taskDao(): TaskDao
-    }
 
     @Provides
     fun taskDataBase(

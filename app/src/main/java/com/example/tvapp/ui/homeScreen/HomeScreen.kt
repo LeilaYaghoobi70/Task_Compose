@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.example.tvapp.data.model.Task
 import com.example.tvapp.utils.Destination
 import com.example.tvapp.utils.EMPTY_SCREEN
+import com.example.tvapp.utils.GetResult
 
 
 @Composable
@@ -40,7 +41,7 @@ fun HomeScreen(
             .fillMaxHeight()
     ) {
         TopAppBar(title = { Text(text = "Task") })
-        Tasks(isLoading = false, tasks= state.getTasks)
+        Tasks(isLoading = false, tasks = state.getTasks)
         FloatingActionButton(
             onClick = {
                 navController.navigate(Destination.NEW_TASK_SCREEN)
@@ -60,7 +61,7 @@ fun HomeScreen(
 @Composable
 private fun Tasks(
     isLoading: Boolean,
-    tasks: Result<List<Task>>?,
+    tasks: GetResult<List<Task>>?,
 ) {
     val scrollState = rememberScrollState()
     LaunchedEffect(Unit) { scrollState.animateScrollTo(10000) }
@@ -71,12 +72,12 @@ private fun Tasks(
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        tasks?.let {
-            it.onFailure {}
-            it.onSuccess { tasks ->
-                tasks.map { task -> ItemTask(task = task) }
+        tasks?.let { getResultTask ->
+            when (getResultTask) {
+                is GetResult.Success -> getResultTask.data?.map { task -> ItemTask(task = task) }
+                is GetResult.Error -> { }
+                else -> Unit
             }
-
         }
 
         if (isLoading) {

@@ -1,6 +1,7 @@
 package com.example.tvapp.utils
 
 import android.app.Activity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,6 +15,7 @@ object Destination{
    const val HOME_SCREEN = "HomeScreen"
     const val NEW_TASK_SCREEN = "NewTaskScreen"
 }
+@ExperimentalAnimationApi
 @Composable
 fun Activity.SettingNavHost(
     navController: NavHostController,

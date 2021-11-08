@@ -17,10 +17,9 @@ fun NewTaskScreen(
 ) {
     Column(modifier = modifier) {
        Button(onClick = {
-           newTaskViewModel.addNewTask(task = Task(id = 0,
-               title = "Ali",
+           newTaskViewModel.addNewTask(task = Task(
                description = "Leila",
-               time = "20"))
+           ))
        }) {
 
        }

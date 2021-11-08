@@ -1,3 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TvApp</string>
+    <string name="add_task">ADD TASK</string>
+    <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="empty_string" >""</string>
+    <string name="tasks" >Tasks</string>
 </resources>
